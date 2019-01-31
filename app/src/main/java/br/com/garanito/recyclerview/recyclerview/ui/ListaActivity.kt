@@ -28,13 +28,15 @@ class ListaActivity : AppCompatActivity() {
     }
 
     private fun exibeNaLista(pokemons: List<Pokemon>) {
-        rvPokemons.adapter = ListaPokemonAdapter(this, pokemons)
-        rvPokemons.layoutManager=LinearLayoutManager(this)
+        rvPokemons.adapter = ListaPokemonAdapter(this, pokemons, {
+            Toast.makeText(this, it.nome, Toast.LENGTH_LONG).show()
+        })
+        rvPokemons.layoutManager = LinearLayoutManager(this)
 
     }
 
-    private fun exibeErro(erro:Throwable){
-        Toast.makeText(this,erro.message,Toast.LENGTH_LONG).show()
+    private fun exibeErro(erro: Throwable) {
+        Toast.makeText(this, erro.message, Toast.LENGTH_LONG).show()
     }
 
     private fun carregarDados() {
@@ -56,11 +58,11 @@ class ListaActivity : AppCompatActivity() {
                     }
 
                     override fun onNext(t: PokemonResponse) {
-                    exibeNaLista(t.content)
+                        exibeNaLista(t.content)
                     }
 
                     override fun onError(e: Throwable) {
-                    exibeErro(e)
+                        exibeErro(e)
                     }
                 }) //implementação do observador
 
