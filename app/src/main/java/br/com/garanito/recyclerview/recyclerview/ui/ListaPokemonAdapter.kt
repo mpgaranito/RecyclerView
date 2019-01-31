@@ -12,14 +12,15 @@ import br.com.garanito.recyclerview.recyclerview.model.Pokemon
 import kotlinx.android.synthetic.main.pokemon_row.view.*
 
 class ListaPokemonAdapter(
-        private val context : Context,
-        private  val pokemons : List<Pokemon>
-        ) :
+        private val context: Context,
+        private val pokemons: List<Pokemon>,
+        private val listener: (Pokemon) -> Unit
+) :
 
-        RecyclerView.Adapter<ListaPokemonAdapter.PokemonViewHolder>(){
+        RecyclerView.Adapter<ListaPokemonAdapter.PokemonViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PokemonViewHolder {
         val view = LayoutInflater.from(context)
-                .inflate(R.layout.pokemon_row,parent,false)
+                .inflate(R.layout.pokemon_row, parent, false)
         return PokemonViewHolder(view)
     }
 
@@ -29,16 +30,17 @@ class ListaPokemonAdapter(
 
 
     override fun onBindViewHolder(holder: PokemonViewHolder, position: Int) {
-        holder.bindView(pokemons[position])
+        holder.bindView(pokemons[position],listener)
     }
 
-    class  PokemonViewHolder(itemView: View):
-            RecyclerView.ViewHolder(itemView){
-        fun bindView(pokemon:Pokemon) = with(itemView){
+    class PokemonViewHolder(itemView: View) :
+            RecyclerView.ViewHolder(itemView) {
+        fun bindView(pokemon: Pokemon,  listener: (Pokemon) -> Unit) = with(itemView) {
             tvPokemon.text = pokemon.nome
             getPicassoAuth(itemView.context)
                     .load("https://pokedexdx.herokuapp.com${pokemon.imagem}")
                     .into(ivPokemon)
+        setOnClickListener{listener(pokemon)}
         }
     }
 }
